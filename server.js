@@ -27,17 +27,20 @@ app.use(cors());
 app.post('/api/data/add', async (req, res) => {
     const { name, data } = req.body;
   
+    // Validate request body
     if (!name || !data) {
       return res.status(400).json({ message: 'Both name and data are required.' });
     }
   
     try {
+      // Check if component with the same name already exists
       const existingComponent = await Component.findOne({ name });
   
       if (existingComponent) {
         return res.status(400).json({ message: 'Component already exists. Use update API instead.' });
       }
   
+      // Create new component
       await Component.create({ name, data });
       res.status(200).json({ message: 'Data added successfully.' });
     } catch (error) {
@@ -50,11 +53,13 @@ app.post('/api/data/add', async (req, res) => {
 app.put('/api/data/update', async (req, res) => {
     const { name, data } = req.body;
   
+    // Validate request body
     if (!name || !data) {
       return res.status(400).json({ message: 'Both name and data are required.' });
     }
   
     try {
+      // Find and update existing component
       const existingComponent = await Component.findOneAndUpdate({ name }, { data });
   
       if (!existingComponent) {
@@ -71,6 +76,7 @@ app.put('/api/data/update', async (req, res) => {
 // Count API
 app.get('/api/count', async (req, res) => {
     try {
+      // Count total number of components
       const componentCount = await Component.countDocuments();
       res.status(200).json({ componentCount });
     } catch (error) {
