@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -20,6 +21,7 @@ const Component = mongoose.model('Component', componentSchema);
 
 // Middleware
 app.use(bodyParser.json());
+app.use(cors());
 
 // Add Data API
 app.post('/api/data/add', async (req, res) => {
